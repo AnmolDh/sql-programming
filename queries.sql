@@ -63,3 +63,19 @@ SELECT * FROM employee_payroll WHERE start_date BETWEEN CAST('2001-01-01' AS DAT
 -- |3 |Rishav|1     |2004-09-10|
 -- +--+------+------+----------+
 
+
+
+
+-- # UC 6 - Ability to add Gender to Employee Payroll Table and Update the Rows to reflect the correct Employee Gender
+
+ALTER TABLE employee_payroll ADD COLUMN gender VARCHAR(1);
+
+UPDATE employee_payroll SET gender='M' WHERE id BETWEEN 1 AND 3;
+-- +--+------+------+----------+------+
+-- |id|name  |salary|start_date|gender|
+-- +--+------+------+----------+------+
+-- |1 |Anmol |0     |2000-01-01|M     |
+-- |2 |Ankit |1     |2001-10-01|M     |
+-- |3 |Rishav|1     |2004-09-10|M     |
+-- +--+------+------+----------+------+
+
