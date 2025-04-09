@@ -79,3 +79,23 @@ UPDATE employee_payroll SET gender='M' WHERE id BETWEEN 1 AND 3;
 -- |3 |Rishav|1     |2004-09-10|M     |
 -- +--+------+------+----------+------+
 
+
+
+
+-- # UC 7 - Ability to find sum, average, min, max and number of male and female employees
+
+SELECT gender, COUNT(id) FROM employee_payroll GROUP BY gender;
+-- +------+---------+
+-- |gender|COUNT(id)|
+-- +------+---------+
+-- |M     |3        |
+-- +------+---------+
+
+SELECT SUM(salary) from employee_payroll;
+-- +-----------+
+-- |SUM(salary)|
+-- +-----------+
+-- |2          |
+-- +-----------+
+
+
