@@ -28,3 +28,17 @@ INSERT INTO employee_payroll VALUES
     (1, 'Anmol', 0.0, '2000-01-01'),
     (2, 'Ankit', 1.0, '2001-10-01'),
     (3, 'Rishav', 1.0, '2004-09-10');
+
+
+
+
+-- # Ability to retrieve all the employee payroll data
+
+SELECT * FROM employee_payroll;
+-- +--+------+------+----------+
+-- |id|name  |salary|start_date|
+-- +--+------+------+----------+
+-- |1 |Anmol |0     |2000-01-01|
+-- |2 |Ankit |1     |2001-10-01|
+-- |3 |Rishav|1     |2004-09-10|
+-- +--+------+------+----------+
