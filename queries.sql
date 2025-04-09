@@ -22,7 +22,7 @@ CREATE TABLE employee_payroll (
 
 
 
--- # Ability to create employee payroll data in the payroll service database
+-- # UC 3 - Ability to create employee payroll data in the payroll service database
 
 INSERT INTO employee_payroll VALUES
     (1, 'Anmol', 0.0, '2000-01-01'),
@@ -32,7 +32,7 @@ INSERT INTO employee_payroll VALUES
 
 
 
--- # Ability to retrieve all the employee payroll data
+-- # UC 4 - Ability to retrieve all the employee payroll data
 
 SELECT * FROM employee_payroll;
 -- +--+------+------+----------+
@@ -42,3 +42,24 @@ SELECT * FROM employee_payroll;
 -- |2 |Ankit |1     |2001-10-01|
 -- |3 |Rishav|1     |2004-09-10|
 -- +--+------+------+----------+
+
+
+
+
+-- # UC 5 - Ability to retrieve salary data for a particular employee as well as all employees who have joined in a particular data range
+
+SELECT salary FROM employee_payroll WHERE name='Anmol';
+-- +------+
+-- |salary|
+-- +------+
+-- |0     |
+-- +------+
+
+SELECT * FROM employee_payroll WHERE start_date BETWEEN CAST('2001-01-01' AS DATE) AND DATE(NOW());
+-- +--+------+------+----------+
+-- |id|name  |salary|start_date|
+-- +--+------+------+----------+
+-- |2 |Ankit |1     |2001-10-01|
+-- |3 |Rishav|1     |2004-09-10|
+-- +--+------+------+----------+
+
