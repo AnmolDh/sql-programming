@@ -108,3 +108,15 @@ ADD phone VARCHAR(15),
 ADD email VARCHAR(100),
 ADD address VARCHAR(255) DEFAULT 'N/A',
 ADD department VARCHAR(100) NOT NULL;
+
+
+
+
+-- # UC 9 - extend employee_payroll table to have Basic Pay, Deductions, Taxable Pay, Income Tax, Net Pay
+
+ALTER TABLE employee_payroll
+ADD basic_pay DECIMAL(10,2),
+ADD deductions DECIMAL(10,2),
+ADD taxable_pay DECIMAL(10,2),
+ADD income_tax DECIMAL(10,2),
+ADD net_pay DECIMAL(10,2);
