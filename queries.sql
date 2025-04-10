@@ -63,3 +63,15 @@ UPDATE address_book SET zip='100211' WHERE first_name='Rishav';
 -- |Anmol     |Dhiman   |32, West Avenue|SYD |NSW  |100211|8319832222|test@test.com    |
 -- |Rishav    |Thakur   |42, East Avenue|SYD |NSW  |100211|3922199222|test@testmail.com|
 -- +----------+---------+---------------+----+-----+------+----------+-----------------+
+
+
+
+
+-- # UC5 - delete a person using person's name
+
+DELETE FROM address_book WHERE first_name='Rishav';
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+
+-- |first_name|last_name|address        |city|state|zip   |phone     |email            |
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+
+-- |Anmol     |Dhiman   |32, West Avenue|SYD |NSW  |100211|8319832222|test@test.com    |
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+
