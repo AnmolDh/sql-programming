@@ -75,3 +75,93 @@ DELETE FROM address_book WHERE first_name='Rishav';
 -- +----------+---------+---------------+----+-----+------+----------+-----------------+
 -- |Anmol     |Dhiman   |32, West Avenue|SYD |NSW  |100211|8319832222|test@test.com    |
 -- +----------+---------+---------------+----+-----+------+----------+-----------------+
+
+
+
+
+-- # UC6 - Retrieve Person belonging to a City or State
+
+SELECT * FROM address_book WHERE city='SYD';
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+
+-- |first_name|last_name|address        |city|state|zip   |phone     |email            |
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+
+-- |Anmol     |Dhiman   |32, West Avenue|SYD |NSW  |100211|8319832222|test@test.com    |
+-- |Rishav    |Thakur   |42, East Avenue|SYD |NSW  |100211|3922199222|test@testmail.com|
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+
+
+
+
+
+-- # UC7 - understand the size of address book by City and State
+
+SELECT COUNT(city) FROM address_book GROUP BY city;
+-- +-----------+
+-- |COUNT(city)|
+-- +-----------+
+-- |2          |
+-- +-----------+
+
+
+
+
+-- # UC8 - retrieve entries sorted alphabetically by Person’s name for a given city
+
+SELECT * FROM address_book WHERE city='SYD' ORDER BY first_name DESC;
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+
+-- |first_name|last_name|address        |city|state|zip   |phone     |email            |
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+
+-- |Rishav    |Thakur   |42, East Avenue|SYD |NSW  |100211|3922199222|test@testmail.com|
+-- |Anmol     |Dhiman   |32, West Avenue|SYD |NSW  |100211|8319832222|test@test.com    |
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+
+
+
+
+
+-- # UC9 - identify each Address Book with name and Type.
+
+ALTER TABLE address_book ADD COLUMN type VARCHAR(20);
+
+UPDATE address_book SET type='friend' WHERE state='NSW';
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+------+
+-- |first_name|last_name|address        |city|state|zip   |phone     |email            |type  |
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+------+
+-- |Anmol     |Dhiman   |32, West Avenue|SYD |NSW  |100211|8319832222|test@test.com    |friend|
+-- |Rishav    |Thakur   |42, East Avenue|SYD |NSW  |100211|3922199222|test@testmail.com|friend|
+-- +----------+---------+---------------+----+-----+------+----------+-----------------+------+
+
+
+
+
+-- # UC10 - get number of contact persons
+
+SELECT type, COUNT(type) FROM address_book GROUP BY type;
+-- +------+-----------+
+-- |type  |COUNT(type)|
+-- +------+-----------+
+-- |friend|2          |
+-- +------+-----------+
+
+
+
+
+-- # UC11 - add person to both Friend and Family
+
+CREATE TABLE address_type(
+    id int NOT NULL UNIQUE AUTO_INCREMENT,
+    first_name VARCHAR(10),
+    contact_type VARCHAR(20),
+    primary key (id),
+    foreign key (first_name) REFERENCES address_book(first_name)
+);
+
+INSERT INTO address_type VALUES
+    (1, 'Anmol', 'Family'),
+    (2, 'Anmol', 'Friend'),
+    (3, 'Rishav', 'Friend');
+-- +--+----------+------------+
+-- |id|first_name|contact_type|
+-- +--+----------+------------+
+-- |1 |Anmol     |Family      |
+-- |2 |Anmol     |Friend      |
+-- |3 |Rishav    |Friend      |
+-- +--+----------+------------+
