@@ -1,4 +1,30 @@
--- # UC1 - Ability to create a Address Book Service DB
+      --     +---------------------+
+      --     |   ADDRESS_BOOK      |
+      --     |---------------------|
+      --     | first_name (PK)     |
+      --     | last_name           |
+      --     | address             |
+      --     | city                |
+      --     | state               |
+      --     | zip                 |
+      --     | phone               |
+      --     | email               |
+      --     | type                |
+      --     +---------------------+
+      --                 ^
+      --                 |
+      --                 |
+      -- +---------------------------------+
+      -- |           ADDRESS_TYPE          |
+      -- |---------------------------------|
+      -- | id (PK)                         |
+      -- | first_name (FK) -> ADDRESS_BOOK |
+      -- | contact_type                    |
+      -- +---------------------------------+
+
+
+
+
 
 create database address_book;
 
@@ -8,8 +34,6 @@ use address_book;
 
 
 
-
--- # UC2 - create a Table with first and last names, address, city, state, zip, phone number and email as its attributes
 
 CREATE TABLE address_book (
     first_name VARCHAR(50),
@@ -24,8 +48,6 @@ CREATE TABLE address_book (
 
 
 
-
--- # UC3 - insert new Contacts to Address Book
 
 INSERT INTO address_book VALUES
      ('Anmol',
@@ -54,8 +76,6 @@ INSERT INTO address_book VALUES
 
 
 
--- # UC4 - edit existing contact person using their name
-
 UPDATE address_book SET zip='100211' WHERE first_name='Rishav';
 -- +----------+---------+---------------+----+-----+------+----------+-----------------+
 -- |first_name|last_name|address        |city|state|zip   |phone     |email            |
@@ -67,8 +87,6 @@ UPDATE address_book SET zip='100211' WHERE first_name='Rishav';
 
 
 
--- # UC5 - delete a person using person's name
-
 DELETE FROM address_book WHERE first_name='Rishav';
 -- +----------+---------+---------------+----+-----+------+----------+-----------------+
 -- |first_name|last_name|address        |city|state|zip   |phone     |email            |
@@ -78,8 +96,6 @@ DELETE FROM address_book WHERE first_name='Rishav';
 
 
 
-
--- # UC6 - Retrieve Person belonging to a City or State
 
 SELECT * FROM address_book WHERE city='SYD';
 -- +----------+---------+---------------+----+-----+------+----------+-----------------+
@@ -92,8 +108,6 @@ SELECT * FROM address_book WHERE city='SYD';
 
 
 
--- # UC7 - understand the size of address book by City and State
-
 SELECT COUNT(city) FROM address_book GROUP BY city;
 -- +-----------+
 -- |COUNT(city)|
@@ -103,8 +117,6 @@ SELECT COUNT(city) FROM address_book GROUP BY city;
 
 
 
-
--- # UC8 - retrieve entries sorted alphabetically by Person’s name for a given city
 
 SELECT * FROM address_book WHERE city='SYD' ORDER BY first_name DESC;
 -- +----------+---------+---------------+----+-----+------+----------+-----------------+
@@ -116,8 +128,6 @@ SELECT * FROM address_book WHERE city='SYD' ORDER BY first_name DESC;
 
 
 
-
--- # UC9 - identify each Address Book with name and Type.
 
 ALTER TABLE address_book ADD COLUMN type VARCHAR(20);
 
@@ -132,8 +142,6 @@ UPDATE address_book SET type='friend' WHERE state='NSW';
 
 
 
--- # UC10 - get number of contact persons
-
 SELECT type, COUNT(type) FROM address_book GROUP BY type;
 -- +------+-----------+
 -- |type  |COUNT(type)|
@@ -144,8 +152,22 @@ SELECT type, COUNT(type) FROM address_book GROUP BY type;
 
 
 
--- # UC11 - add person to both Friend and Family
-INSERT INTO address_book VALUES
+CREATE TABLE address_type(
+    id int NOT NULL UNIQUE AUTO_INCREMENT,
+    first_name VARCHAR(10),
+    contact_type VARCHAR(20),
+    primary key (id),
+    foreign key (first_name) REFERENCES address_book(first_name)
+);
+
+INSERT INTO address_type VALUES
     (1, 'Anmol', 'Family'),
     (2, 'Anmol', 'Friend'),
     (3, 'Rishav', 'Friend');
+-- +--+----------+------------+
+-- |id|first_name|contact_type|
+-- +--+----------+------------+
+-- |1 |Anmol     |Family      |
+-- |2 |Anmol     |Friend      |
+-- |3 |Rishav    |Friend      |
+-- +--+----------+------------+
