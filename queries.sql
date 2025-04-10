@@ -120,3 +120,19 @@ ADD deductions DECIMAL(10,2),
 ADD taxable_pay DECIMAL(10,2),
 ADD income_tax DECIMAL(10,2),
 ADD net_pay DECIMAL(10,2);
+
+
+
+
+-- # UC 10 - make Terissa as part of Sales and Marketing Department
+
+INSERT INTO employee_payroll (
+    name, gender, salary, start_date, phone, email, address, department,
+    basic_pay, deductions, taxable_pay, income_tax, net_pay
+) VALUES (
+             'Terissa', 'F', 85000.00, '2022-05-01', '1234567890', 'terissa@example.com', '123 Elm St', 'Sales',
+             80000.00, 5000.00, 75000.00, 10000.00, 65000.00
+         ), (
+    'Terissa', 'F', 85000.00, '2022-05-01', '1234567890', 'terissa@example.com', '123 Elm St', 'Marketing',
+    80000.00, 5000.00, 75000.00, 10000.00, 65000.00
+);
