@@ -99,3 +99,12 @@ SELECT SUM(salary) from employee_payroll;
 -- +-----------+
 
 
+
+
+-- # UC 8 - extend employee_payroll data to store employee information like employee phone, address and department
+
+ALTER TABLE employee_payroll
+ADD phone VARCHAR(15),
+ADD email VARCHAR(100),
+ADD address VARCHAR(255) DEFAULT 'N/A',
+ADD department VARCHAR(100) NOT NULL;
