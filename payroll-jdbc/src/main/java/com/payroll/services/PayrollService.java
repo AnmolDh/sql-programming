@@ -2,6 +2,7 @@ package com.payroll.services;
 
 import com.payroll.dtos.EmployeePayrollDto;
 import com.payroll.dtos.PayrollAnalysisDto;
+import com.payroll.entities.Employee;
 import com.payroll.exceptions.PayrollServiceException;
 import com.payroll.mappings.ToEmployeePayrollDto;
 import com.payroll.mappings.ToPayrollAnalysisDto;
@@ -145,5 +146,23 @@ public class PayrollService {
         return analysisList;
     }
 
+    public static void addEmployee(Employee employee) throws PayrollServiceException {
+        String query = "INSERT INTO employee VALUES(?, ?, ?, ?, ?)";
 
+        try (Connection conn = DbService.getInstance().getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, employee.getId());
+            stmt.setString(2, employee.getName());
+            stmt.setString(3, employee.getGender());
+            stmt.setDate(4, employee.getStart_date());
+            stmt.setInt(5, employee.getDept_id());
+
+            stmt.executeUpdate();
+
+            System.out.println("Employee Added");
+        }
+        catch (Exception e) {
+            throw new PayrollServiceException(e.getMessage());
+        }
+    }
 }

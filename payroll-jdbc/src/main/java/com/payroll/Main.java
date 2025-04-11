@@ -2,6 +2,7 @@ package com.payroll;
 
 import com.payroll.dtos.EmployeePayrollDto;
 import com.payroll.dtos.PayrollAnalysisDto;
+import com.payroll.entities.Employee;
 import com.payroll.exceptions.PayrollServiceException;
 import com.payroll.services.PayrollService;
 
@@ -32,6 +33,9 @@ public class Main {
             for (PayrollAnalysisDto payrollAnalysisDto : payrollAnalysis) {
                 System.out.println(payrollAnalysisDto);
             }
+
+            // UC 7
+            PayrollService.addEmployee(new Employee(5, "Anmol", "M", Date.valueOf("2025-01-01"), 1));
         }
         catch (PayrollServiceException e){
             System.err.println(e.getMessage());
