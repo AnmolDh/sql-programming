@@ -19,7 +19,7 @@ public class PayrollServiceTest {
         String getSalaryQuery = "SELECT salary FROM payroll WHERE employee_id=?";
 
 
-        try (Connection conn = DbService.getConnection()){
+        try (Connection conn = DbService.getInstance().getConnection()){
             PreparedStatement idStmt = conn.prepareStatement(getIdQuery);
             idStmt.setString(1, name);
             ResultSet idRs = idStmt.executeQuery();

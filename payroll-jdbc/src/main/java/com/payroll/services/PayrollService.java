@@ -20,7 +20,7 @@ public class PayrollService {
             LEFT JOIN payroll p ON e.id = p.employee_id
         """;
 
-        try (Connection conn = DbService.getConnection()){
+        try (Connection conn = DbService.getInstance().getConnection()){
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
@@ -47,7 +47,7 @@ public class PayrollService {
             WHERE e.id = ?
         """;
 
-        try (Connection conn = DbService.getConnection()){
+        try (Connection conn = DbService.getInstance().getConnection()){
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, employee_id);
             ResultSet rs = stmt.executeQuery();
@@ -68,7 +68,7 @@ public class PayrollService {
     public static void updateEmployeeSalary(String name, double salary) throws PayrollServiceException {
         String query = "UPDATE payroll SET salary=? WHERE payroll_id=(SELECT id FROM employee WHERE name=?)";
 
-        try (Connection conn = DbService.getConnection()){
+        try (Connection conn = DbService.getInstance().getConnection()){
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setDouble(1, salary);
             stmt.setString(2, name);
@@ -80,4 +80,36 @@ public class PayrollService {
             throw new PayrollServiceException(e.getMessage());
         }
     }
+
+
+    public static List<EmployeePayrollDto> getEmployeesByDateRange(Date start, Date end) throws PayrollServiceException {
+        List<EmployeePayrollDto> employeePayrolls = new ArrayList<>();
+
+        String query = """
+        SELECT * FROM employee e
+        JOIN department d ON e.dept_id = d.dept_id
+        LEFT JOIN contact c ON e.id = c.employee_id
+        LEFT JOIN payroll p ON e.id = p.employee_id
+        WHERE e.start_date BETWEEN ? AND ?
+    """;
+
+        try (Connection conn = DbService.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setDate(1, start);
+            stmt.setDate(2, end);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    employeePayrolls.add(ToEmployeePayrollDto.map(rs));
+                }
+            }
+
+        } catch (Exception e) {
+            throw new PayrollServiceException("Error retrieving employees by date range: " + e.getMessage());
+        }
+
+        return employeePayrolls;
+    }
+
 }
