@@ -10,11 +10,6 @@ public class DbService {
     public static final String dbPassword = System.getenv("DATABASE_PASSWORD");
 
     public static Connection getConnection() throws SQLException {
-        Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-
-        boolean isReachable = conn.isValid(1);
-        System.out.println("Connected to database: " + isReachable);
-
-        return conn;
+        return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 }
