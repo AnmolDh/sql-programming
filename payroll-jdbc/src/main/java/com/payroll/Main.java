@@ -1,6 +1,7 @@
 package com.payroll;
 
 import com.payroll.dtos.EmployeePayrollDto;
+import com.payroll.dtos.PayrollAnalysisDto;
 import com.payroll.exceptions.PayrollServiceException;
 import com.payroll.services.PayrollService;
 
@@ -24,6 +25,12 @@ public class Main {
             List<EmployeePayrollDto> employees = PayrollService.getEmployeesByDateRange(Date.valueOf("2021-01-01"), Date.valueOf("2023-01-01"));
             for (EmployeePayrollDto employee : employees) {
                 System.out.println(employee);
+            }
+
+            // UC 6
+            List<PayrollAnalysisDto> payrollAnalysis = PayrollService.getPayrollAnalysisByGender();
+            for (PayrollAnalysisDto payrollAnalysisDto : payrollAnalysis) {
+                System.out.println(payrollAnalysisDto);
             }
         }
         catch (PayrollServiceException e){

@@ -1,8 +1,10 @@
 package com.payroll.services;
 
 import com.payroll.dtos.EmployeePayrollDto;
+import com.payroll.dtos.PayrollAnalysisDto;
 import com.payroll.exceptions.PayrollServiceException;
 import com.payroll.mappings.ToEmployeePayrollDto;
+import com.payroll.mappings.ToPayrollAnalysisDto;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -111,5 +113,37 @@ public class PayrollService {
 
         return employeePayrolls;
     }
+
+
+    public static List<PayrollAnalysisDto> getPayrollAnalysisByGender() throws PayrollServiceException {
+        List<PayrollAnalysisDto> analysisList = new ArrayList<>();
+
+        String query = """
+        SELECT gender,
+               SUM(salary) AS total_salary,
+               AVG(salary) AS average_salary,
+               MIN(salary) AS min_salary,
+               MAX(salary) AS max_salary,
+               COUNT(*) AS employee_count
+        FROM employee e
+        JOIN payroll p ON e.id = p.employee_id
+        GROUP BY gender
+    """;
+
+        try (Connection conn = DbService.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                analysisList.add(ToPayrollAnalysisDto.map(rs));
+            }
+
+        } catch (SQLException e) {
+            throw new PayrollServiceException("Error fetching payroll analysis: " + e.getMessage());
+        }
+
+        return analysisList;
+    }
+
 
 }
