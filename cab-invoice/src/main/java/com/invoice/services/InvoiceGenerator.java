@@ -1,5 +1,6 @@
 package com.invoice.services;
 
+import com.invoice.entities.InvoiceSummary;
 import com.invoice.entities.Ride;
 import com.invoice.enums.RideType;
 
@@ -25,6 +26,11 @@ public class InvoiceGenerator {
             total += calculateFare(ride);
         }
         return total;
+    }
+
+    public InvoiceSummary calculateFareSummary(Ride[] rides) {
+        double totalFare = calculateFare(rides);
+        return new InvoiceSummary(rides.length, totalFare);
     }
 
 }

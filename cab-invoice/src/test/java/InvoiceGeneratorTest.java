@@ -1,3 +1,4 @@
+import com.invoice.entities.InvoiceSummary;
 import com.invoice.entities.Ride;
 import com.invoice.enums.RideType;
 import com.invoice.services.InvoiceGenerator;
@@ -31,6 +32,20 @@ public class InvoiceGeneratorTest {
         };
         double fare = invoiceGenerator.calculateFare(rides);
         assertEquals(30.0, fare); // 25 + 5
+    }
+
+
+    @Test
+    public void givenMultipleRides_shouldReturnInvoiceSummary() {
+        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+        Ride[] rides = {
+                new Ride(2.0, 5, RideType.NORMAL),
+                new Ride(0.1, 1, RideType.NORMAL)
+        };
+        InvoiceSummary summary = invoiceGenerator.calculateFareSummary(rides);
+        assertEquals(2, summary.getTotalRides());
+        assertEquals(30.0, summary.getTotalFare());
+        assertEquals(15.0, summary.getAverageFare());
     }
 
 }
