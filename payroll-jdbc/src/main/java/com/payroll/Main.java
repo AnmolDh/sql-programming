@@ -37,8 +37,11 @@ public class Main {
 //            // UC 7
 //            PayrollService.addEmployee(new Employee(5, "Anmol", "M", Date.valueOf("2025-01-01"), 1));
 //
-            // UC 8
-            PayrollService.addEmployeeWithPayroll(new Employee(6, "Rishav", "M", Date.valueOf("2025-10-31"), 2), 8920.0);
+//            // UC 8-10
+//            PayrollService.addEmployeeWithPayroll(new Employee(6, "Rishav", "M", Date.valueOf("2025-10-31"), 2), 8920.0);
+
+            // UC 11-12
+            PayrollService.removeEmployee(3);
         }
         catch (PayrollServiceException e){
             System.err.println(e.getMessage());

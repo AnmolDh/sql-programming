@@ -222,4 +222,16 @@ public class PayrollService {
             }
         }
     }
+
+    public static void removeEmployee(int employeeId) throws PayrollServiceException {
+        String query = "UPDATE employee SET is_active = FALSE WHERE id = ?";
+        try (Connection conn = DbService.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, employeeId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new PayrollServiceException(e.getMessage());
+        }
+    }
+
 }
