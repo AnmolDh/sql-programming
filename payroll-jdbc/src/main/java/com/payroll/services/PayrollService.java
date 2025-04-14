@@ -3,6 +3,7 @@ package com.payroll.services;
 import com.payroll.dtos.EmployeePayrollDto;
 import com.payroll.dtos.PayrollAnalysisDto;
 import com.payroll.entities.Employee;
+import com.payroll.entities.Payroll;
 import com.payroll.exceptions.PayrollServiceException;
 import com.payroll.mappings.ToEmployeePayrollDto;
 import com.payroll.mappings.ToPayrollAnalysisDto;
@@ -163,6 +164,62 @@ public class PayrollService {
         }
         catch (Exception e) {
             throw new PayrollServiceException(e.getMessage());
+        }
+    }
+
+    public static void addEmployeeWithPayroll(Employee employee, double salary) throws PayrollServiceException {
+        String insertEmployee = "INSERT INTO employee (name, gender, start_date, dept_id) VALUES (?, ?, ?, ?)";
+        String insertPayroll = "INSERT INTO payroll (basic_pay, salary, deductions, taxable_pay, income_tax, net_pay, employee_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        Connection conn = null;
+        try{
+            conn = DbService.getInstance().getConnection();
+            conn.setAutoCommit(false);
+            PreparedStatement empStmt = conn.prepareStatement(insertEmployee, Statement.RETURN_GENERATED_KEYS);
+            empStmt.setString(1, employee.getName());
+            empStmt.setString(2, employee.getGender());
+            empStmt.setDate(3, employee.getStart_date());
+            empStmt.setInt(4, employee.getDept_id());
+            empStmt.executeUpdate();
+
+
+            ResultSet rs = empStmt.getGeneratedKeys();
+            if (!rs.next()) throw new PayrollServiceException("Failed to retrieve employee ID.");
+            int employeeId = rs.getInt(1);
+
+            double basicPay = salary * 0.5;
+            double deductions = salary * 0.20;
+            double taxablePay = salary - deductions;
+            double incomeTax = taxablePay * 0.10;
+            double netPay = salary - incomeTax;
+
+            PreparedStatement payStmt = conn.prepareStatement(insertPayroll);
+            payStmt.setDouble(1, basicPay);
+            payStmt.setDouble(2, salary);
+            payStmt.setDouble(3, deductions);
+            payStmt.setDouble(4, taxablePay);
+            payStmt.setDouble(5, incomeTax);
+            payStmt.setDouble(6, netPay);
+            payStmt.setInt(7, employeeId);
+            payStmt.executeUpdate();
+
+            conn.commit();
+            System.out.println("Employee and payroll details added successfully.");
+        }
+        catch (Exception e) {
+            try {
+                if (conn != null) conn.rollback();
+            } catch (SQLException se) {
+                System.err.println("Rollback failed: " + se.getMessage());
+            }
+            throw new PayrollServiceException("Failed to add employee and payroll: " + e.getMessage());
+        }
+        finally {
+            try {
+                if (conn != null) conn.setAutoCommit(true);
+            } catch (SQLException se) {
+                System.err.println("Auto-commit reset failed: " + se.getMessage());
+            }
         }
     }
 }
