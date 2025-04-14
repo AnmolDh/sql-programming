@@ -18,4 +18,13 @@ public class InvoiceGenerator {
         double fare = ride.getDistance() * ratePerKm + ride.getTime() * ratePerMinute;
         return Math.max(fare, minFare);
     }
+
+    public double calculateFare(Ride[] rides) {
+        double total = 0;
+        for (Ride ride : rides) {
+            total += calculateFare(ride);
+        }
+        return total;
+    }
+
 }

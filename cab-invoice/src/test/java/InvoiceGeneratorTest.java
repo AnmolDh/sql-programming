@@ -21,4 +21,16 @@ public class InvoiceGeneratorTest {
         double fare = invoiceGenerator.calculateFare(ride);
         assertEquals(5.0, fare); // less than min, so Rs. 5
     }
+
+    @Test
+    public void givenMultipleRides_shouldReturnTotalFare() {
+        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+        Ride[] rides = {
+                new Ride(2.0, 5, RideType.NORMAL),
+                new Ride(0.1, 1, RideType.NORMAL)
+        };
+        double fare = invoiceGenerator.calculateFare(rides);
+        assertEquals(30.0, fare); // 25 + 5
+    }
+
 }
