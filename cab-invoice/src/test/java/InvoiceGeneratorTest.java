@@ -1,7 +1,9 @@
 import com.invoice.entities.InvoiceSummary;
 import com.invoice.entities.Ride;
 import com.invoice.enums.RideType;
+import com.invoice.repos.RideRepository;
 import com.invoice.services.InvoiceGenerator;
+import com.invoice.services.InvoiceService;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,5 +49,26 @@ public class InvoiceGeneratorTest {
         assertEquals(30.0, summary.getTotalFare());
         assertEquals(15.0, summary.getAverageFare());
     }
+
+
+    @Test
+    public void givenUserId_shouldReturnInvoiceSummary() {
+        RideRepository rideRepository = new RideRepository();
+        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+        InvoiceService service = new InvoiceService(rideRepository, invoiceGenerator);
+
+        String userId = "user1";
+        Ride[] rides = {
+                new Ride(3.0, 10, RideType.NORMAL),
+                new Ride(1.0, 2, RideType.NORMAL)
+        };
+
+        rideRepository.addRides(userId, rides);
+
+        InvoiceSummary summary = service.getInvoiceSummary(userId);
+        assertEquals(2, summary.getTotalRides());
+        assertEquals(52.0, summary.getTotalFare());
+    }
+
 
 }
